@@ -13,13 +13,37 @@
 @end
 
 @implementation ViewController
-
+@synthesize fullImageView;
+@synthesize scrollView;
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
+    scrollView = [[UIScrollView alloc]initWithFrame:[UIScreen mainScreen].applicationFrame];
+    UIImage *image = [UIImage imageNamed:@"BangkokBTSMRT"];
+    fullImageView = [[UIImageView alloc]initWithImage:image];
+    fullImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+    fullImageView.contentMode =  UIViewContentModeScaleAspectFit;
+    CGRect frame = [[UIScreen mainScreen]bounds];
+    fullImageView.frame = frame;
+    scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    
+    scrollView.maximumZoomScale = 6.0;
+    scrollView.minimumZoomScale = 1;
+    scrollView.clipsToBounds = YES;
+    scrollView.delegate = self;
+    scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.showsVerticalScrollIndicator = NO;
+    [scrollView addSubview:fullImageView];
+    [scrollView setBackgroundColor:[UIColor whiteColor]];
+    self.view = scrollView;
+
 	// Do any additional setup after loading the view, typically from a nib.
 }
-
+-(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return fullImageView;
+}
 - (void)viewDidUnload
 {
     [super viewDidUnload];
